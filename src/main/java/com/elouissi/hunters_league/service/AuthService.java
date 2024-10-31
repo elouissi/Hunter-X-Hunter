@@ -2,25 +2,33 @@ package com.elouissi.hunters_league.service;
 
 import com.elouissi.hunters_league.domain.User;
 import com.elouissi.hunters_league.repository.AuthRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-    @Autowired
-    private  AuthRepository authRepository;
 
-    public boolean login (User userLogin){
-        User user = authRepository.findByUsername(userLogin.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        if(user.getPassword().equals(userLogin.getPassword())){
-            return true;
-        } else {
-            throw new IllegalArgumentException("Password is incorrect");
-        }
-
+    private final AuthRepository authRepository;
+    public AuthService(AuthRepository authRepository) {
+        this.authRepository = authRepository;
     }
 
+    public boolean login(User userLogin) {
+        User user = authRepository.findByEmail(userLogin.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
+
+        if (BCrypt.checkpw(userLogin.getPassword(), user.getPassword())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public User register(User user) {
+        String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+        user.setPassword(hashedPassword);
+        return authRepository.save(user);
+    }
 
 }
