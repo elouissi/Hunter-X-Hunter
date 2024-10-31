@@ -1,7 +1,8 @@
-package com.epshiro.samurai.domain;
+package com.elouissi.hunters_league.domain;
 
-import com.epshiro.samurai.domain.enums.Difficulty;
-import com.epshiro.samurai.domain.enums.SpeciesType;
+import com.elouissi.hunters_league.domain.enums.Difficulty;
+import com.elouissi.hunters_league.domain.enums.SpeciesType;
+
 import jakarta.persistence.*;
 import lombok.*;
 

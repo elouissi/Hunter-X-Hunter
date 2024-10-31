@@ -1,10 +1,9 @@
-package com.epshiro.samurai.domain;
+package com.elouissi.hunters_league.domain;
 
-import com.epshiro.samurai.domain.enums.SpeciesType;
+import com.elouissi.hunters_league.domain.enums.SpeciesType;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;

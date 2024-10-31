@@ -1,4 +1,4 @@
-package com.epshiro.samurai.domain;
+package com.elouissi.hunters_league.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
