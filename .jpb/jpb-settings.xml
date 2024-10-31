@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DatabaseMigrationSettings">
+  <component name="DatabaseMigrationSettings" liquibaseFileType="YAML">
     <database-infos>
       <database-info>
         <option name="enabled" value="true" />
@@ -10,7 +10,7 @@
   </component>
   <component name="PersistenceUnitSettings">
     <persistence-units>
-      <persistence-unit name="Default">
+      <persistence-unit name="Default" defaultIncludeChangeLogFile="src/main/resources/db/changelog/master.yaml">
         <packages>
           <package value="com.elouissi.hunters_league" />
         </packages>

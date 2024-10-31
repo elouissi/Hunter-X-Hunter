@@ -1,4 +1,4 @@
-package com.elouissi.hunters_league;
+package com.elouissi.hunters_league.domain.enums;
 
 import lombok.Getter;
 

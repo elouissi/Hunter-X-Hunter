@@ -1,6 +1,6 @@
-package com.epshiro.samurai.domain;
+package com.elouissi.hunters_league.domain;
 
-import com.epshiro.samurai.domain.enums.Role;
+import com.elouissi.hunters_league.domain.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
