@@ -39,6 +39,19 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("L'utilisateur n'existe pas.");
         }
     }
+    @GetMapping("/delete/{username}")
+    public ResponseEntity<?> remove(@PathVariable String username){
+        Optional<User> userOptional = userService.getUserByUsername(username);
+        if (userOptional.isPresent()){
+            User existingUser = userOptional.get();
+            User deletedUser = userService.remove(existingUser);
+            return ResponseEntity.ok("Utilisateur a rejeté avec succès.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("L'utilisateur n'existe pas.");
+        }
+
+    }
+
 
 
 

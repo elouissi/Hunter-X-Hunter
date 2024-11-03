@@ -2,6 +2,7 @@ package com.elouissi.hunters_league.service;
 
 import com.elouissi.hunters_league.domain.User;
 import com.elouissi.hunters_league.repository.UserRepository;
+import com.elouissi.hunters_league.service.DTO.UserDTO;
 import com.elouissi.hunters_league.web.errors.NullVarException;
 import com.elouissi.hunters_league.web.errors.UserAlreadyExistException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -59,6 +60,10 @@ public class UserService {
 
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+    public User remove(User user){
+        userRepository.delete(user);
+        return user;
     }
 
 }
