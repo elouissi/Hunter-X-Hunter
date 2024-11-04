@@ -1,7 +1,6 @@
 package com.elouissi.hunters_league.web.rest.VM;
 
 import com.elouissi.hunters_league.domain.enums.Difficulty;
-import com.elouissi.hunters_league.domain.enums.Role;
 import com.elouissi.hunters_league.domain.enums.SpeciesType;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -13,18 +12,21 @@ import lombok.*;
 @NoArgsConstructor
 public class SpecieVM {
 
-
-
-    @NotBlank(message = "name name is required")
+    @NotBlank(message = "Le nom est requis")
     private String name;
 
-    @NotBlank(message = "CIN is required")
-    @Pattern(regexp = "^[0-9]+$", message = "CIN must be alphanumeric")
-    private Long minimumWeight;
+    @NotNull(message = "Le poids minimum est requis")
+    @Positive(message = "Le poids minimum doit être un nombre positif")
+    private Double minimumWeight;
 
-    @NotNull(message = "Role is required")
+    @NotNull(message = "La catégorie est requise")
     private SpeciesType category;
 
-    @NotNull(message = "difficulty is required")
+    @NotNull(message = "La difficulté est requise")
     private Difficulty difficulty;
+
+    @NotNull(message = "Les points sont requis")
+    private Integer points;
+
 }
+
