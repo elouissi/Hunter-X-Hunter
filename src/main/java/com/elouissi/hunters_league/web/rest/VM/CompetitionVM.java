@@ -18,6 +18,7 @@
 
             @UniqueCode(message = "le code du competition déja existe")
             @NotBlank(message = "Code is required")
+            @Pattern(regexp = "^[a-zA-Z]+_\\d{4}-\\d{2}-\\d{2}$", message = "Le code doit suivre le format 'lieu_YYYY-MM-DD'")
             private String code;
 
             @NotBlank(message = "Location is required")
