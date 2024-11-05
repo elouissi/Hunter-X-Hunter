@@ -1,6 +1,7 @@
 package com.elouissi.hunters_league.web.rest.VM;
 
 import com.elouissi.hunters_league.domain.enums.Role;
+import com.elouissi.hunters_league.validation.UniqueCin;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
