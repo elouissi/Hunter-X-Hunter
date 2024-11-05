@@ -4,9 +4,7 @@
         import com.elouissi.hunters_league.validation.UniqueCode;
         import jakarta.validation.constraints.*;
         import lombok.*;
-
         import java.time.LocalDateTime;
-
 
         @Getter
         @Setter

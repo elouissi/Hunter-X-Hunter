@@ -1,6 +1,7 @@
 package com.elouissi.hunters_league.web.rest.VM;
 
 import com.elouissi.hunters_league.domain.enums.Role;
+import com.elouissi.hunters_league.validation.UniqueCin;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +33,7 @@ public class RegisterVM {
     @NotBlank(message = "Last name is required")
     private String lastName;
 
+    @UniqueCin(message = "Cin est déja existe")
     @NotBlank(message = "CIN is required")
     @Pattern(regexp = "^[A-Za-z0-9]+$", message = "CIN must be alphanumeric")
     private String cin;
