@@ -44,13 +44,13 @@ public class CompetitionController {
 
         if (competitionOptional.isPresent()) {
             Competition existingCompetition = competitionOptional.get();
-            Competition specieToUpdate = competitionMapper.VmToEntity(competitionVM);
-//            specieToUpdate.setId(Competition.getId());
-//
-//            Competition updatedCompetition = competitionService.(specieToUpdate);
-            return ResponseEntity.ok("Specie mis à jour avec succès.");
+            Competition competitionToUpdate = competitionMapper.VmToEntity(competitionVM);
+            competitionToUpdate.setId(existingCompetition.getId());
+
+            Competition updatedCompetition = competitionService.updateCompetition(competitionToUpdate);
+            return ResponseEntity.ok("Competition mis à jour avec succès.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Le specie n'existe pas.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La competition n'existe pas.");
         }
 
 
