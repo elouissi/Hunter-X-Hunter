@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -79,6 +80,18 @@ public class UserService {
         participationRepository.deleteByUser(user);
         userRepository.delete(user);
         return user;
+    }
+
+    public List<User> findByCriteria(String username, String email) {
+        if (username != null && email != null) {
+            return userRepository.findByUsernameContainingIgnoreCaseAndEmailContainingIgnoreCase(username, email);
+        } else if (username != null) {
+            return userRepository.findByUsernameContainingIgnoreCase(username);
+        } else if (email != null) {
+            return userRepository.findByEmailContainingIgnoreCase(email);
+        } else {
+            return userRepository.findAll();
+        }
     }
 
 }

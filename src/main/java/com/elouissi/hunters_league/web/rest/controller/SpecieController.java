@@ -1,6 +1,7 @@
 package com.elouissi.hunters_league.web.rest.controller;
 
 import com.elouissi.hunters_league.domain.Species;
+import com.elouissi.hunters_league.domain.enums.SpeciesType;
 import com.elouissi.hunters_league.service.SpecieService;
 import com.elouissi.hunters_league.web.rest.VM.SpecieVM;
 import com.elouissi.hunters_league.web.rest.VM.mapper.SpecieMapper;
@@ -59,5 +60,11 @@ public class SpecieController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Le specie n'existe pas.");
         }
+    }
+    @GetMapping("getByCategory/{category}")
+    public ResponseEntity<List<Species>> getByCategory(@PathVariable String category){
+        List<Species> species = specieService.getAllByCategory(SpeciesType.valueOf(category));
+        return ResponseEntity.ok(species);
+
     }
 }
