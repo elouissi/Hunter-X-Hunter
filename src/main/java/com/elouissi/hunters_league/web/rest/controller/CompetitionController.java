@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -37,6 +38,22 @@ public class CompetitionController {
         }else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La competition n'existe pas.");
         }
+    }
+    @GetMapping("getAll")
+    public ResponseEntity<List<Competition>> getAll(){
+        List<Competition> competitionList = competitionService.getALl();
+        return ResponseEntity.ok(competitionList);
+    }
+    @GetMapping("getByCode/{code}")
+    public ResponseEntity<?> getByCode(@PathVariable String code ){
+        Optional<Competition> competitionFiltrer = competitionService.getCompetitionBycode(code);
+        if (competitionFiltrer.isPresent()){
+            Competition competition = competitionFiltrer.get();
+            return ResponseEntity.ok(competition);
+        }else {
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("la competition ne trouve pas");
+        }
+
     }
     @PostMapping("update/{code}")
     public ResponseEntity<?> update(@RequestBody @Valid CompetitionVM competitionVM , @PathVariable String code){
