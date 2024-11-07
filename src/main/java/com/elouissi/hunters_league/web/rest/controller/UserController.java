@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,7 +45,7 @@ public class UserController {
         Optional<User> userOptional = userService.getUserByUsername(username);
         if (userOptional.isPresent()){
             User existingUser = userOptional.get();
-            User deletedUser = userService.remove(existingUser);
+            User deletedUser =   userService.remove(existingUser);
             return ResponseEntity.ok("Utilisateur a rejeté avec succès.");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("L'utilisateur n'existe pas.");
@@ -52,6 +53,11 @@ public class UserController {
 
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<User>> searchUsers( @RequestParam(required = false) String username,@RequestParam(required = false) String email) {
+        List<User> users = userService.findByCriteria(username, email);
+        return ResponseEntity.ok(users);
+    }
 
 
 

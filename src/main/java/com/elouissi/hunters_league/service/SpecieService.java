@@ -1,6 +1,7 @@
 package com.elouissi.hunters_league.service;
 
 import com.elouissi.hunters_league.domain.Species;
+import com.elouissi.hunters_league.domain.enums.SpeciesType;
 import com.elouissi.hunters_league.repository.SpecieRepository;
 import com.elouissi.hunters_league.web.errors.NullVarException;
 import com.elouissi.hunters_league.web.errors.ObjectAlreadyExistException;
@@ -30,6 +31,9 @@ public class SpecieService {
     public Species remove(Species species){
          specieRepository.delete(species);
         return species;
+    }
+    public List<Species> getAllByCategory(SpeciesType category){
+        return specieRepository.getSpeciesByCategory(category);
     }
     public Species updateSpecies(Species specie) {
         if (specie.getId() == null) throw new NullVarException("id is null");
