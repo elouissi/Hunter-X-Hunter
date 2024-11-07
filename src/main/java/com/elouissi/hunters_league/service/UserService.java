@@ -66,6 +66,9 @@ public class UserService {
     public Optional<User> getUserById(UUID userId) {
         return userRepository.findById(userId);
     }
+    public Optional<User> getUserByCin(String CIN) {
+        return userRepository.findByCin(CIN);
+    }
 
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);

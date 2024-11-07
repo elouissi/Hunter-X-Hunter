@@ -44,7 +44,7 @@ public class UserController {
         Optional<User> userOptional = userService.getUserByUsername(username);
         if (userOptional.isPresent()){
             User existingUser = userOptional.get();
-            User deletedUser = userService.remove(existingUser);
+            User deletedUser =   userService.remove(existingUser);
             return ResponseEntity.ok("Utilisateur a rejeté avec succès.");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("L'utilisateur n'existe pas.");
