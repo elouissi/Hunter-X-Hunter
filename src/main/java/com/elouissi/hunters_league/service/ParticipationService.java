@@ -39,13 +39,19 @@ public class ParticipationService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilisateur non trouvé"));
         Competition competition = competitionService.getCompetitionBycode(code)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Compétition non trouvée"));
+        if (competition.getOpenRegistration() && competition.getParticipations().size() <= competition.getMaxParticipants()) {
 
-        Participation participation = participationMapper.VmToEntity(participationVM);
-        participation.setUser(user);
-        participation.setCompetition(competition);
-        Participation participation1 = participationRepository.save(participation);
-        ParticipationDTO participationDTO = participationMapper.toDTO(participation1);
-        return participationDTO;
+            Participation participation = participationMapper.VmToEntity(participationVM);
+            participation.setUser(user);
+            participation.setCompetition(competition);
+            Participation savedParticipation = participationRepository.save(participation);
+            competition.getParticipations().add(savedParticipation);
+            competitionService.updateCompetition(competition);
+            ParticipationDTO participationDTO = participationMapper.toDTO(savedParticipation);
+            return participationDTO;
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "L'inscription est fermée ou la limite de participants est atteinte");
+        }
 
     }
     public Optional<Participation> getById(UUID uuid){

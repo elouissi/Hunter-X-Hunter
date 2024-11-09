@@ -38,6 +38,5 @@ public class HuntService {
         hunt.setParticipation(participation);
         return huntRepository.save(hunt);
 
-
     }
 }

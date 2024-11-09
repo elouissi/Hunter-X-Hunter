@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/participation")
@@ -24,9 +25,15 @@ public class ParticipationController {
     }
 
     @PostMapping("/participer")
-    public ResponseEntity<ParticipationDTO> save(@RequestBody @Valid ParticipationVM participationVM) {
-        ParticipationDTO participation=  participationService.saveParticipation(participationVM);
+    public ResponseEntity<?> save(@RequestBody @Valid ParticipationVM participationVM) {
+        try {
+            ParticipationDTO participation=  participationService.saveParticipation(participationVM);
 
-        return ResponseEntity.ok(participation);
+            return ResponseEntity.ok(participation);
+        }  catch (ResponseStatusException e) {
+
+        return ResponseEntity.status(e.getStatusCode()).body("L'inscription est fermée ou la limite de participants est atteinte");
+    }
+
     }
 }
