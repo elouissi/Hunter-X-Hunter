@@ -27,16 +27,28 @@ public class HuntService {
         this.huntRepository = huntRepository;
         this.huntMapper = huntMapper;
     }
-    public Hunt save(HuntVM huntVM){
+    public Hunt save(HuntVM huntVM) {
         UUID code = huntVM.getParticipationID();
         String nameS = huntVM.getNameSpecie();
+        Participation participation = participationService.getById(code)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "La participation n'a pas été trouvée"));
+        Species species = specieService.getSpeciesByname(nameS)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "L'espèce n'a pas été trouvée"));
 
-        Participation participation = participationService.getById(code).orElseThrow( ()->new ResponseStatusException(HttpStatus.NOT_FOUND,"la participation non trouvé"));
-        Species species = specieService.getSpeciesByname(nameS).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"le specie est non trouver"));
+        if (species.getMinimumWeight() > huntVM.getWeight()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Le poids de la chasse est inférieur au poids minimal de l'espèce.");
+        }
+
         Hunt hunt = huntMapper.VmToEntity(huntVM);
+
         hunt.setSpecies(species);
         hunt.setParticipation(participation);
-        return huntRepository.save(hunt);
 
+        Double score = species.getPoints() + (hunt.getWeight() * species.getCategory().getValue()) + species.getDifficulty().getValue();
+
+        participation.setScore(participation.getScore() +score);
+        participationService.update(participation);
+        return huntRepository.save(hunt);
     }
+
 }
