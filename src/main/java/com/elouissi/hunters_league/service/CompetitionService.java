@@ -23,7 +23,9 @@ public class CompetitionService {
     public List<Competition> getALl(){
         return competitionRepository.findAll();
     }
+
     public Competition save(Competition competition){
+        competition.setOpenRegistration(true);
         return (Competition) competitionRepository.save(competition);
     }
     public Optional<Competition> getCompetitionBycode(String code) {
