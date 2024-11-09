@@ -54,6 +54,17 @@ public class ParticipationService {
         }
 
     }
+    public Participation update(Participation participation) {
+        Participation existingParticipation = participationRepository.getParticipationById(participation.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Participation non trouvée"));
+
+        existingParticipation.setScore(participation.getScore());
+        existingParticipation.setUser(participation.getUser());
+        existingParticipation.setCompetition(participation.getCompetition());
+
+        return participationRepository.save(existingParticipation);
+    }
+
     public Optional<Participation> getById(UUID uuid){
         return participationRepository.getParticipationById(uuid);
     }

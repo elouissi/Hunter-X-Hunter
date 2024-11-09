@@ -14,4 +14,5 @@ public interface ParticipationRepository extends JpaRepository<Participation , L
     public void deleteByUser(User user);
     public void deleteByCompetition(Competition competition);
     public Optional<Participation> getParticipationById(UUID uuid);
+
 }
