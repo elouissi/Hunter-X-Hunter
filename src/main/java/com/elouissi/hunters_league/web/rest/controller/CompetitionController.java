@@ -3,6 +3,7 @@ package com.elouissi.hunters_league.web.rest.controller;
 import com.elouissi.hunters_league.domain.Competition;
 
 import com.elouissi.hunters_league.service.CompetitionService;
+import com.elouissi.hunters_league.service.DTO.CompetitionDTO;
 import com.elouissi.hunters_league.web.rest.VM.CompetitionVM;
 import com.elouissi.hunters_league.web.rest.VM.mapper.CompetitionMapper;
 import jakarta.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/competition")
@@ -27,6 +29,11 @@ public class CompetitionController {
         competitionService.save(competition);
         return ResponseEntity.ok("le specie a bien ete creer");
 
+    }
+    @GetMapping("/result/{uuid}")
+    public ResponseEntity<CompetitionDTO> getCompetitonWithParticipation(@PathVariable UUID uuid){
+        CompetitionDTO competitionDTO =competitionService.getCompetitionWithParticipation(uuid);
+        return ResponseEntity.ok(competitionDTO);
     }
     @GetMapping("remove/{code}")
     public ResponseEntity<String> remove(@PathVariable String code){

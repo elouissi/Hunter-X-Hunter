@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -55,5 +56,11 @@ public class ParticipationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La participation n'existe pas.");
         }
     }
+    @GetMapping("/Consultation/{cin}")
+    public ResponseEntity<List<Participation>> getMyCompetition(@PathVariable String cin) {
+        List<Participation> mesHistorique = participationService.getMyHistorique(cin);
+        return ResponseEntity.ok(mesHistorique);
+    }
+
 
 }

@@ -9,9 +9,12 @@ import com.elouissi.hunters_league.web.rest.VM.ParticipationVM;
 import com.elouissi.hunters_league.web.rest.VM.mapper.ParticipationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,6 +34,9 @@ public class ParticipationService {
         this.participationMapper = participationMapper;
     }
 
+    public List<Participation> getAll(){
+        return participationRepository.findAll();
+    }
     public ParticipationDTO saveParticipation(ParticipationVM participationVM) {
         String cin = participationVM.getCin();
         String code = participationVM.getCompetitionCode();
@@ -67,5 +73,11 @@ public class ParticipationService {
 
     public Optional<Participation> getById(UUID uuid){
         return participationRepository.getParticipationById(uuid);
+    }
+
+    public List<Participation> getMyHistorique(String cin) {
+        User user = userService.getUserByCin(cin)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        return participationRepository.getParticipationsByUser(user);
     }
 }

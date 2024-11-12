@@ -1,21 +1,24 @@
 package com.elouissi.hunters_league.service;
 
 import com.elouissi.hunters_league.domain.Competition;
-import com.elouissi.hunters_league.repository.CompetitonRepository;
+
+import com.elouissi.hunters_league.repository.CompetitionRepository;
 import com.elouissi.hunters_league.repository.ParticipationRepository;
+import com.elouissi.hunters_league.service.DTO.CompetitionDTO;
 import com.elouissi.hunters_league.web.errors.NullVarException;
 import com.elouissi.hunters_league.web.errors.ObjectAlreadyExistException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CompetitionService {
-    private CompetitonRepository competitionRepository;
+    private CompetitionRepository competitionRepository;
     private ParticipationRepository participationRepository;
 
-    public CompetitionService(CompetitonRepository competitionRepository,ParticipationRepository participationRepository) {
+    public CompetitionService(CompetitionRepository competitionRepository,ParticipationRepository participationRepository) {
         this.competitionRepository = competitionRepository;
         this.participationRepository = participationRepository;
     }
@@ -31,6 +34,11 @@ public class CompetitionService {
     public Optional<Competition> getCompetitionBycode(String code) {
         return competitionRepository.findByCode(code);
     }
+    public CompetitionDTO getCompetitionWithParticipation(UUID code) {
+        return competitionRepository.getCompetitionWithParticipationCount(code);
+    }
+
+
     public Competition remove(Competition competition){
         participationRepository.deleteByCompetition(competition);
         competitionRepository.delete(competition);

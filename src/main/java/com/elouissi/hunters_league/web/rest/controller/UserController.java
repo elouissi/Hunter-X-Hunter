@@ -1,6 +1,9 @@
 package com.elouissi.hunters_league.web.rest.controller;
 
+import com.elouissi.hunters_league.domain.Competition;
+import com.elouissi.hunters_league.domain.Participation;
 import com.elouissi.hunters_league.domain.User;
+import com.elouissi.hunters_league.service.DTO.RankDTO;
 import com.elouissi.hunters_league.service.UserService;
 import com.elouissi.hunters_league.web.rest.VM.UserVM;
 import com.elouissi.hunters_league.web.rest.VM.mapper.RegisterMapper;
@@ -57,6 +60,11 @@ public class UserController {
     public ResponseEntity<List<User>> searchUsers( @RequestParam(required = false) String username,@RequestParam(required = false) String email) {
         List<User> users = userService.findByCriteria(username, email);
         return ResponseEntity.ok(users);
+    }
+    @GetMapping("/rank")
+    public ResponseEntity<List<RankDTO>> userRanks(){
+        List<RankDTO> rankDTOList = userService.getRankOfUserByScore();
+        return ResponseEntity.ok(rankDTOList);
     }
 
 

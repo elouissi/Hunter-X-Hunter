@@ -4,6 +4,7 @@ import com.elouissi.hunters_league.domain.User;
 import com.elouissi.hunters_league.repository.HuntRepository;
 import com.elouissi.hunters_league.repository.ParticipationRepository;
 import com.elouissi.hunters_league.repository.UserRepository;
+import com.elouissi.hunters_league.service.DTO.RankDTO;
 import com.elouissi.hunters_league.web.errors.NullVarException;
 import com.elouissi.hunters_league.web.errors.ObjectAlreadyExistException;
 import jakarta.transaction.Transactional;
@@ -92,6 +93,9 @@ public class UserService {
         } else {
             return userRepository.findAll();
         }
+    }
+    public List<RankDTO> getRankOfUserByScore(){
+        return userRepository.getRankOfUserByScore();
     }
 
 }
