@@ -5,13 +5,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public enum Role {
-    ADMIN(Permission.ADMIN_READ, Permission.ADMIN_WRITE,
-            Permission.MEMBER_READ, Permission.MEMBER_WRITE,
-            Permission.JURY_READ, Permission.JURY_WRITE),
+    ADMIN(Permission.CAN_MANAGE_SETTINGS, Permission.CAN_MANAGE_COMPETITIONS,
+            Permission.CAN_MANAGE_SPECIES, Permission.    CAN_MANAGE_USERS
+    ),
 
-    MEMBER(Permission.MEMBER_READ, Permission.MEMBER_WRITE),
+    MEMBER(Permission.CAN_PARTICIPATE, Permission.CAN_VIEW_RANKINGS,Permission.CAN_VIEW_COMPETITIONS),
 
-    JURY(Permission.JURY_READ, Permission.JURY_WRITE);
+    JURY(Permission.CAN_SCORE);
 
     private final Set<Permission> permissions;
 
