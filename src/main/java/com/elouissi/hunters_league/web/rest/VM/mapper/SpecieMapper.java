@@ -1,8 +1,6 @@
 package com.elouissi.hunters_league.web.rest.VM.mapper;
 
 import com.elouissi.hunters_league.domain.Species;
-import com.elouissi.hunters_league.domain.User;
-import com.elouissi.hunters_league.service.DTO.AuthUserDTO;
 import com.elouissi.hunters_league.web.rest.VM.SpecieVM;
 import org.mapstruct.Mapper;
 

@@ -1,7 +1,6 @@
 package com.elouissi.hunters_league.repository;
 
 import com.elouissi.hunters_league.domain.Species;
-import com.elouissi.hunters_league.domain.User;
 import com.elouissi.hunters_league.domain.enums.SpeciesType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

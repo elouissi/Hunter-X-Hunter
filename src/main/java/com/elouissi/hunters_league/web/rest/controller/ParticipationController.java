@@ -29,6 +29,11 @@ public class ParticipationController {
         this.participationService = participationService;
     }
 
+//    @GetMapping("/calculate-scores")
+//    public String calculateScores() {
+//        participationService.calculateScoreOfAllParticipation();
+//        return "Scores updated successfully!";
+//    }
     @PostMapping("/participer")
     public ResponseEntity<?> save(@RequestBody @Valid ParticipationVM participationVM) {
         try {
