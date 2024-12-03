@@ -2,6 +2,7 @@ package com.elouissi.hunters_league.web.rest.VM;
 
 import com.elouissi.hunters_league.domain.enums.Role;
 import com.elouissi.hunters_league.validation.UniqueCin;
+import com.elouissi.hunters_league.validation.UniqueEmail;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,6 +39,7 @@ public class RegisterVM {
     @Pattern(regexp = "^[A-Za-z0-9]+$", message = "CIN must be alphanumeric")
     private String cin;
 
+    @UniqueEmail(message = "Email est deja existe")
     @NotBlank(message = "Email is required")
     @Email(message = "Email should be valid")
     private String email;

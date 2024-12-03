@@ -8,9 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -52,10 +50,15 @@ public class AppUser implements UserDetails {
 
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role.getPermissions().stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.name()))
-                .collect(Collectors.toList());
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        role.getPermissions().forEach(permission ->
+                authorities.add(new SimpleGrantedAuthority(permission.name()))
+        );
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
+
+        return authorities;
     }
+
 
     @Override
     public String getPassword() {

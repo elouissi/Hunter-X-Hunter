@@ -23,13 +23,12 @@ public class SpecieController {
     @Autowired
     private SpecieMapper specieMapper;
 
-    @PreAuthorize("hasAuthority('CAN_PARTICIPATE') or hasAuthority('CAN_SCORE')")
     @GetMapping("/getAll")
     public ResponseEntity<List<Species>> getALl(){
         List<Species> species = specieService.getALl();
         return ResponseEntity.ok(species);
     }
-    @PreAuthorize("hasAuthority('CAN_MANAGE_SETTINGS')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/save")
     public ResponseEntity<?> save( @RequestBody @Valid SpecieVM specieVM ){
         Species specie =  specieMapper.VmToEntity(specieVM);
