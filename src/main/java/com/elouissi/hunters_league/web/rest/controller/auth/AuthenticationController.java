@@ -1,6 +1,8 @@
 package com.elouissi.hunters_league.web.rest.controller.auth;
 
 import com.elouissi.hunters_league.service.AuthenticationService;
+import com.elouissi.hunters_league.web.rest.VM.AuthenticateRequest;
+import com.elouissi.hunters_league.web.rest.VM.AuthenticationResponse;
 import com.elouissi.hunters_league.web.rest.VM.RegisterVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

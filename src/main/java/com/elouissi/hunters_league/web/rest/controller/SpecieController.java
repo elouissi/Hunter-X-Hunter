@@ -36,6 +36,7 @@ public class SpecieController {
         return ResponseEntity.ok("le specie a bien ete creer");
 
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/delete/{name}")
     public ResponseEntity<?> remove(@PathVariable String name){
         Optional<Species> SpecieOptional = specieService.getSpeciesByname(name);

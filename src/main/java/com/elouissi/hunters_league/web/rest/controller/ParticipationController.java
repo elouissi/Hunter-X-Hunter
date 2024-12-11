@@ -35,7 +35,7 @@ public class ParticipationController {
 //        participationService.calculateScoreOfAllParticipation();
 //        return "Scores updated successfully!";
 //    }
-    @PreAuthorize("hasRole('MEMBRE')")
+//    @PreAuthorize("hasRole('MEMBRE')")
     @PostMapping("/participer")
     public ResponseEntity<?> save(@RequestBody @Valid ParticipationVM participationVM) {
         try {
@@ -48,6 +48,7 @@ public class ParticipationController {
         }
 
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("update/{id}")
     public ResponseEntity<?> update(@RequestBody @Valid ParticipationVM participationVM, @PathVariable UUID id) {
         Optional<Participation> participationOptional = participationService.getById(id);
@@ -63,6 +64,7 @@ public class ParticipationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La participation n'existe pas.");
         }
     }
+
     @GetMapping("/Consultation/{cin}")
     public ResponseEntity<List<Participation>> getMyCompetition(@PathVariable String cin) {
         List<Participation> mesHistorique = participationService.getMyHistorique(cin);

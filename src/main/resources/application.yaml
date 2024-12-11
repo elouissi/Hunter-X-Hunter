@@ -16,6 +16,18 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+
+
   liquibase:
     enabled: true
     change-log: db/changelog/master.yaml
+
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-alias: spring-https
+    key-store: classpath:java.p12
+    key-store-password: password
+    key-store-type: PKCS12
+    key-password: password

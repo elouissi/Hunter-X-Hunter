@@ -1,4 +1,4 @@
-package com.elouissi.hunters_league.web.rest.controller.auth;
+package com.elouissi.hunters_league.web.rest.VM;
 
 import lombok.*;
 

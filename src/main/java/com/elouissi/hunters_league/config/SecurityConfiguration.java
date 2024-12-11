@@ -24,16 +24,18 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)//CsrfFilter
+                .requiresChannel(channel -> channel
+                        .anyRequest().requiresSecure()) // Forcer HTTPS
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/V2/auth/**").permitAll()
                         .anyRequest().authenticated()
-                )
+                )//BasicAuthenticationFilter
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
+                )//SessionManagementFilter
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)//jwtAuthFilter
                 .build();
     }
 }

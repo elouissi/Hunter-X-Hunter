@@ -31,6 +31,7 @@ public class UserController {
         this.userMapper = userMapper;
 
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<Page<UserResponse>> getAllUsers(@RequestParam(defaultValue = "0") int page,
                                                           @RequestParam(defaultValue = "10") int size) {
@@ -42,6 +43,7 @@ public class UserController {
 
         return ResponseEntity.ok(usersDTO);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/update/{username}")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UserVM userVM, @PathVariable String username) {
         Optional<AppUser> userOptional = userService.getUserByUsername(username);
@@ -57,6 +59,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("L'utilisateur n'existe pas.");
         }
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/delete/{username}")
     public ResponseEntity<?> remove(@PathVariable String username){
         Optional<AppUser> userOptional = userService.getUserByUsername(username);

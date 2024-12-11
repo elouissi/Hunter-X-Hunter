@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class CompetitionController {
     private  CompetitionMapper competitionMapper;
     @Autowired
     private CompetitionService competitionService;
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody @Valid CompetitionVM competitionVM){
         Competition competition = competitionMapper.VmToEntity(competitionVM);
@@ -30,11 +32,13 @@ public class CompetitionController {
         return ResponseEntity.ok("le specie a bien ete creer");
 
     }
+
     @GetMapping("/result/{uuid}")
     public ResponseEntity<CompetitionDTO> getCompetitonWithParticipation(@PathVariable UUID uuid){
         CompetitionDTO competitionDTO =competitionService.getCompetitionWithParticipation(uuid);
         return ResponseEntity.ok(competitionDTO);
     }
+
     @GetMapping("remove/{code}")
     public ResponseEntity<String> remove(@PathVariable String code){
         Optional<Competition> competitionOptional = competitionService.getCompetitionBycode(code);
@@ -51,6 +55,7 @@ public class CompetitionController {
         List<Competition> competitionList = competitionService.getALl();
         return ResponseEntity.ok(competitionList);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("getByCode/{code}")
     public ResponseEntity<?> getByCode(@PathVariable String code ){
         Optional<Competition> competitionFiltrer = competitionService.getCompetitionBycode(code);
@@ -62,6 +67,7 @@ public class CompetitionController {
         }
 
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("update/{code}")
     public ResponseEntity<?> update(@RequestBody @Valid CompetitionVM competitionVM , @PathVariable String code){
         Optional<Competition> competitionOptional = competitionService.getCompetitionBycode(code);
