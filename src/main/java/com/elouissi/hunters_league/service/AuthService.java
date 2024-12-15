@@ -1,6 +1,6 @@
 package com.elouissi.hunters_league.service;
 
-import com.elouissi.hunters_league.domain.User;
+import com.elouissi.hunters_league.domain.AppUser;
 import com.elouissi.hunters_league.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -13,11 +13,11 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    public boolean login(User userLogin) {
-        User user = userRepository.findByEmail(userLogin.getEmail())
+    public boolean login(AppUser appUserLogin) {
+        AppUser appUser = userRepository.findByEmail(appUserLogin.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
 
-        if (BCrypt.checkpw(userLogin.getPassword(), user.getPassword())) {
+        if (BCrypt.checkpw(appUserLogin.getPassword(), appUser.getPassword())) {
             return true;
         } else {
             return false;
@@ -25,10 +25,10 @@ public class AuthService {
     }
 
 
-    public User register(User user) {
-        String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-        user.setPassword(hashedPassword);
-        return userRepository.save(user);
+    public AppUser register(AppUser appUser) {
+        String hashedPassword = BCrypt.hashpw(appUser.getPassword(), BCrypt.gensalt());
+        appUser.setPassword(hashedPassword);
+        return userRepository.save(appUser);
     }
 
 }

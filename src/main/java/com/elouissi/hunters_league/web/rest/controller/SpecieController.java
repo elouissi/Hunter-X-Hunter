@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class SpecieController {
         List<Species> species = specieService.getALl();
         return ResponseEntity.ok(species);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/save")
     public ResponseEntity<?> save( @RequestBody @Valid SpecieVM specieVM ){
         Species specie =  specieMapper.VmToEntity(specieVM);
@@ -34,6 +36,7 @@ public class SpecieController {
         return ResponseEntity.ok("le specie a bien ete creer");
 
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/delete/{name}")
     public ResponseEntity<?> remove(@PathVariable String name){
         Optional<Species> SpecieOptional = specieService.getSpeciesByname(name);
