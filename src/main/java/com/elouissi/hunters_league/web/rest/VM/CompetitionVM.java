@@ -32,7 +32,7 @@
             private SpeciesType speciesType;
 
             @NotNull(message = "Minimum participants is required")
-            @Min(value = 1, message = "Minimum participants must be at least 1")
+            @Min(value = 0, message = "Minimum participants must be at least 0")
             private Integer minParticipants;
 
             @NotNull(message = "Maximum participants is required")

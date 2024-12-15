@@ -1,6 +1,6 @@
 package com.elouissi.hunters_league.web.rest.controller;
 
-import com.elouissi.hunters_league.domain.User;
+import com.elouissi.hunters_league.domain.AppUser;
 import com.elouissi.hunters_league.service.AuthService;
 import com.elouissi.hunters_league.service.DTO.AuthUserDTO;
 import com.elouissi.hunters_league.web.rest.VM.LoginVM;
@@ -29,8 +29,8 @@ public class AuthController {
     }
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Valid LoginVM userLoginVM) {
-        User user = loginMapper.VmToEntity(userLoginVM);
-        boolean isLoggedIn = authService.login(user);
+        AppUser appUser = loginMapper.VmToEntity(userLoginVM);
+        boolean isLoggedIn = authService.login(appUser);
         if (isLoggedIn) {
             return ResponseEntity.ok("Connexion réussie");
         } else {
@@ -41,9 +41,9 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthUserDTO> register(@RequestBody @Valid RegisterVM registerVM){
-        User userEntity = registerMapper.VmToEntity(registerVM);
-        User user = authService.register(userEntity);
-        AuthUserDTO userDTO = registerMapper.toDTO(user);
+        AppUser appUserEntity = registerMapper.VmToEntity(registerVM);
+        AppUser appUser = authService.register(appUserEntity);
+        AuthUserDTO userDTO = registerMapper.toDTO(appUser);
         return ResponseEntity.ok(userDTO);
     }
 

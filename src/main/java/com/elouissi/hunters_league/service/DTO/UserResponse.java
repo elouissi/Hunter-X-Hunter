@@ -1,23 +1,19 @@
-package com.elouissi.hunters_league.domain;
+package com.elouissi.hunters_league.service.DTO;
 
 import com.elouissi.hunters_league.domain.enums.Role;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
-
-@Entity
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+public class UserResponse {
     private UUID id;
 
 
@@ -41,9 +37,4 @@ public class User {
     private LocalDateTime joinDate;
 
     private LocalDateTime licenseExpirationDate;
-
-    @OneToMany(mappedBy = "user")
-    private List<Participation> participations;
-
 }
-

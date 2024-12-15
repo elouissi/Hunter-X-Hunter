@@ -1,13 +1,16 @@
 package com.elouissi.hunters_league.service;
 
-import com.elouissi.hunters_league.domain.User;
+import com.elouissi.hunters_league.domain.AppUser;
 import com.elouissi.hunters_league.repository.HuntRepository;
 import com.elouissi.hunters_league.repository.ParticipationRepository;
 import com.elouissi.hunters_league.repository.UserRepository;
+import com.elouissi.hunters_league.service.DTO.RankDTO;
 import com.elouissi.hunters_league.web.errors.NullVarException;
 import com.elouissi.hunters_league.web.errors.ObjectAlreadyExistException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -29,60 +32,64 @@ public class UserService {
 
     }
 
-    public User updateUser(User user) {
-        if (user.getId() == null) throw new NullVarException("id is null");
+    public Page<AppUser> getUsersPaginated(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
 
-        User existingUser = userRepository.findById(user.getId())
+    public AppUser updateUser(AppUser appUser) {
+        if (appUser.getId() == null) throw new NullVarException("id is null");
+
+        AppUser existingAppUser = userRepository.findById(appUser.getId())
                 .orElseThrow(() -> new ObjectAlreadyExistException("User id not exist"));
 
-        if (user.getUsername() != null && !user.getUsername().equals(existingUser.getUsername())) {
-            userRepository.findByUsername(user.getUsername()).ifPresent(u -> {
+        if (appUser.getUsername() != null && !appUser.getUsername().equals(existingAppUser.getUsername())) {
+            userRepository.findByUsername(appUser.getUsername()).ifPresent(u -> {
                 throw new ObjectAlreadyExistException("Username already exists");
             });
-            existingUser.setUsername(user.getUsername());
+            existingAppUser.setUsername(appUser.getUsername());
         }
-        if (user.getEmail() != null && !user.getEmail().equals(existingUser.getEmail())) {
-            userRepository.findByEmail(user.getEmail()).ifPresent(u -> {
+        if (appUser.getEmail() != null && !appUser.getEmail().equals(existingAppUser.getEmail())) {
+            userRepository.findByEmail(appUser.getEmail()).ifPresent(u -> {
                 throw new ObjectAlreadyExistException("Email already exists");
             });
-            existingUser.setEmail(user.getEmail());
+            existingAppUser.setEmail(appUser.getEmail());
         }
-        if (user.getCin() != null && !user.getCin().equals(existingUser.getCin())) {
-            userRepository.findByCin(user.getCin()).ifPresent(u -> {
+        if (appUser.getCin() != null && !appUser.getCin().equals(existingAppUser.getCin())) {
+            userRepository.findByCin(appUser.getCin()).ifPresent(u -> {
                 throw new ObjectAlreadyExistException("Cin already exists");
             });
-            existingUser.setCin(user.getCin());
+            existingAppUser.setCin(appUser.getCin());
         }
-        if (user.getPassword() != null) {
-            String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-            existingUser.setPassword(hashedPassword);
+        if (appUser.getPassword() != null) {
+            String hashedPassword = BCrypt.hashpw(appUser.getPassword(), BCrypt.gensalt());
+            existingAppUser.setPassword(hashedPassword);
         }
-        if (user.getFirstName() != null) existingUser.setFirstName(user.getFirstName());
-        if (user.getLastName() != null) existingUser.setLastName(user.getLastName());
-        if (user.getNationality() != null) existingUser.setNationality(user.getNationality());
-        if (user.getRole() != null) existingUser.setRole(user.getRole());
+        if (appUser.getFirstName() != null) existingAppUser.setFirstName(appUser.getFirstName());
+        if (appUser.getLastName() != null) existingAppUser.setLastName(appUser.getLastName());
+        if (appUser.getNationality() != null) existingAppUser.setNationality(appUser.getNationality());
+        if (appUser.getRole() != null) existingAppUser.setRole(appUser.getRole());
 
-        return userRepository.save(existingUser);
+        return userRepository.save(existingAppUser);
     }
-    public Optional<User> getUserById(UUID userId) {
+    public Optional<AppUser> getUserById(UUID userId) {
         return userRepository.findById(userId);
     }
-    public Optional<User> getUserByCin(String CIN) {
+    public Optional<AppUser> getUserByCin(String CIN) {
         return userRepository.findByCin(CIN);
     }
 
-    public Optional<User> getUserByUsername(String username) {
+    public Optional<AppUser> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
     @Transactional
-    public User remove(User user){
-        huntRepository.deleteByParticipationUser(user);
-        participationRepository.deleteByUser(user);
-        userRepository.delete(user);
-        return user;
+    public AppUser remove(AppUser appUser){
+        huntRepository.deleteByParticipationAppUser(appUser);
+        participationRepository.deleteByAppUser(appUser);
+        userRepository.delete(appUser);
+        return appUser;
     }
 
-    public List<User> findByCriteria(String username, String email) {
+    public List<AppUser> findByCriteria(String username, String email) {
         if (username != null && email != null) {
             return userRepository.findByUsernameContainingIgnoreCaseAndEmailContainingIgnoreCase(username, email);
         } else if (username != null) {
@@ -92,6 +99,9 @@ public class UserService {
         } else {
             return userRepository.findAll();
         }
+    }
+    public List<RankDTO> getRankOfUserByScore(){
+        return userRepository.getRankOfUserByScore();
     }
 
 }
