@@ -34,24 +34,21 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)//CsrfFilter
+                .csrf(AbstractHttpConfigurer::disable)
                 .requiresChannel(channel -> channel
-                        .anyRequest().requiresSecure()) // Forcer HTTPS
-                .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt
-                                .decoder(jwtDecoder()) // Utilisez le décodeur personnalisé
-                        )
-                )
+                        .anyRequest().requiresSecure())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/V2/auth/keycloak-login").permitAll()
                         .requestMatchers("/api/V2/auth/**").permitAll()
                         .anyRequest().authenticated()
-                )//BasicAuthenticationFilter
-
+                )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )//SessionManagementFilter
+                )
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)//jwtAuthFilter
+                // Commentez ou supprimez le filtre JWT pour ce point d'endpoint
+                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 }

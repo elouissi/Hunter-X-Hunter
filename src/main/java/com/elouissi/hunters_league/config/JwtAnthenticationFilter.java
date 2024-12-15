@@ -39,6 +39,11 @@ public class JwtAnthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
 
+        if (request.getRequestURI().contains("/api/V2/auth/keycloak-login")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
