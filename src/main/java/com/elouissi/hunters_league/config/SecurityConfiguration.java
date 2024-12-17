@@ -45,7 +45,6 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/V2/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )//BasicAuthenticationFilter
-
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )//SessionManagementFilter
