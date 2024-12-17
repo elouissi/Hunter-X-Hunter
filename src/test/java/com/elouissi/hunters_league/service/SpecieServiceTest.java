@@ -120,7 +120,9 @@ class SpecieServiceTest {
     @Test
     void updateSpecies_existingName_throwsException() {
         Species existingSpecies = new Species();
+
         existingSpecies.setId(UUID.randomUUID());
+
         existingSpecies.setName("Tiger");
 
         when(specieRepository.findById(1L)).thenReturn(Optional.of(species));
