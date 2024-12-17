@@ -34,7 +34,9 @@ class SpecieServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
         species = new Species();
+
         species.setId(UUID.fromString("9c47d5b5-b1a0-4220-a557-d73cf84f0bf4"));
         species.setName("Lion");
         species.setCategory(SpeciesType.SEA);
