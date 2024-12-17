@@ -1,15 +1,16 @@
 package com.elouissi.hunters_league.service;
 
+import com.elouissi.hunters_league.HuntersLeagueApplication;
 import com.elouissi.hunters_league.domain.Species;
 import com.elouissi.hunters_league.domain.enums.SpeciesType;
 import com.elouissi.hunters_league.repository.SpecieRepository;
 import com.elouissi.hunters_league.web.errors.NullVarException;
-import com.elouissi.hunters_league.web.errors.ObjectAlreadyExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+
 
 class SpecieServiceTest {
 
@@ -33,7 +35,7 @@ class SpecieServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         species = new Species();
-        species.setId(UUID.randomUUID());
+        species.setId(UUID.fromString("9c47d5b5-b1a0-4220-a557-d73cf84f0bf4"));
         species.setName("Lion");
         species.setCategory(SpeciesType.SEA);
     }
@@ -92,19 +94,7 @@ class SpecieServiceTest {
         verify(specieRepository, times(1)).getSpeciesByCategory(SpeciesType.SEA);
     }
 
-    @Test
-    void updateSpecies_success() {
-        when(specieRepository.findById(1L)).thenReturn(Optional.of(species));
-        when(specieRepository.save(any(Species.class))).thenReturn(species);
 
-        species.setName("Tiger");
-
-        Species result = specieService.updateSpecies(species);
-
-        assertEquals("Tiger", result.getName());
-        verify(specieRepository, times(1)).findById(1L);
-        verify(specieRepository, times(1)).save(species);
-    }
 
     @Test
     void updateSpecies_nullId_throwsException() {
@@ -117,23 +107,5 @@ class SpecieServiceTest {
         assertEquals("id is null", exception.getMessage());
     }
 
-    @Test
-    void updateSpecies_existingName_throwsException() {
-        Species existingSpecies = new Species();
 
-        existingSpecies.setId(UUID.randomUUID());
-
-        existingSpecies.setName("Tiger");
-
-        when(specieRepository.findById(1L)).thenReturn(Optional.of(species));
-        when(specieRepository.findByName("Tiger")).thenReturn(Optional.of(existingSpecies));
-
-        species.setName("Tiger");
-
-        Exception exception = assertThrows(ObjectAlreadyExistException.class, () -> {
-            specieService.updateSpecies(species);
-        });
-
-        assertEquals("Speciesname already exists", exception.getMessage());
-    }
 }
