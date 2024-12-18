@@ -12,8 +12,6 @@ import java.util.UUID;
 
 @Repository
 public interface ParticipationRepository extends JpaRepository<Participation, Long> {
-
-
     public void deleteByAppUser(AppUser appUser);
 
     public void deleteByCompetition(Competition competition);
