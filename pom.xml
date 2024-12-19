@@ -30,7 +30,7 @@
         <java.version>17</java.version>
         <sonar.projectKey>hunters_league</sonar.projectKey>
         <sonar.host.url>http://localhost:9000/</sonar.host.url>
-        <sonar.token>squ_fbeacdd647a5c3f5e4966c82b1eac80c6a19f189</sonar.token>
+        <sonar.token>squ_75418c88c5a6729b156acf2f189061156f8e49a8</sonar.token>
     </properties>
     <dependencies>
         <dependency>
