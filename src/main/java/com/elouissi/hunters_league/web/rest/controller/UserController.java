@@ -72,7 +72,6 @@ public class UserController {
         }
 
     }
-
     @GetMapping("/search")
     public ResponseEntity<List<AppUser>> searchUsers(@RequestParam(required = false) String username, @RequestParam(required = false) String email) {
         List<AppUser> appUsers = userService.findByCriteria(username, email);
