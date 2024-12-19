@@ -1,47 +1,64 @@
-version: '3.8'
+  version: '3.8'
 
-services:
-  # Service pour l'application Spring Boot
-  app:
-    image: jenkins_sonar:latest
-    container_name: hunters_league_app
-    ports:
-      - "8081:8080"
-      - "8443:8443"   # Example of HTTPS port mapping
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/samurai # L'URL de votre base de données PostgreSQL
-      SPRING_DATASOURCE_USERNAME: samurai # Nom d'utilisateur pour la base de données
-      SPRING_DATASOURCE_PASSWORD: password # Mot de passe pour la base de données
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://localhost:8080/realms/hunters_league
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://localhost:8080/realms/hunters_league/protocol/openid-connect/certs
-      SPRING_JPA_HIBERNATE_DDL_AUTO: none
-      SPRING_JPA_SHOW_SQL: true
-      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: public
-      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: true
-      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
-      SPRING_LIQUIBASE_ENABLED: false
-      SPRING_LIQUIBASE_CHANGE_LOG: db/changelog/master.yaml
-    networks:
-      - app_network
+  services:
+    # Service pour l'application Spring Boot
+    app:
+      image: jenkins_sonar:latest
+      container_name: hunters_league_app
+      ports:
+        - "8443:8443"
+      environment:
+        SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/samurai
+        SPRING_DATASOURCE_USERNAME: samurai
+        SPRING_DATASOURCE_PASSWORD: password
+        SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8082/realms/hunters_league
+        SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://keycloak:8082/realms/hunters_league/protocol/openid-connect/certs
+        SPRING_JPA_HIBERNATE_DDL_AUTO: none
+        SPRING_JPA_SHOW_SQL: true
+        SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: public
+        SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: true
+        SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+        SPRING_LIQUIBASE_ENABLED: false
+        SPRING_LIQUIBASE_CHANGE_LOG: db/changelog/master.yaml
+      networks:
+        - app_network
+      depends_on:
+        - db
+        - keycloak
 
-  db:
-    image: postgres:latest
-    container_name: samurai_db
-    environment:
-      POSTGRES_PASSWORD: password # Mot de passe de l'utilisateur PostgreSQL
-      POSTGRES_DB: samurai # Nom de la base de données
-      POSTGRES_USER: samurai # Nom d'utilisateur PostgreSQL
-    volumes:
-      - C:\Users\Youcode\Desktop\pgdata:/var/lib/postgresql/data # Volume pour persister les données sur votre machine
-    ports:
-      - '5433:5432'
-    networks:
-      - app_network
+    # Service pour la base de données PostgreSQL
+    db:
+      image: postgres:latest
+      container_name: samurai_db
+      environment:
+        POSTGRES_PASSWORD: password
+        POSTGRES_DB: samurai
+        POSTGRES_USER: samurai
+      volumes:
+        - C:\Users\Youcode\Desktop\pgdata:/var/lib/postgresql/data
+      ports:
+        - '5433:5432'
+      networks:
+        - app_network
 
-networks:
-  app_network:
-    driver: bridge
+    # Service pour Keycloak
+    keycloak:
+      image: quay.io/keycloak/keycloak:latest
+      container_name: hunters_league_keycloak
+      environment:
+        KEYCLOAK_ADMIN: admin
+        KEYCLOAK_ADMIN_PASSWORD: admin
+      command:
+        - start-dev
+      ports:
+        - '8082:8080'
+      networks:
+        - app_network
 
-volumes:
-  postgres_data:
-    driver: local
+  networks:
+    app_network:
+      driver: bridge
+
+  volumes:
+    postgres_data:
+      driver: local

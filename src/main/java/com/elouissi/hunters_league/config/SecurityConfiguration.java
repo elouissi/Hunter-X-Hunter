@@ -26,7 +26,7 @@ public class SecurityConfiguration {
     @Bean
     public JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder
-                .withJwkSetUri("http://localhost:8080/realms/hunters_league/protocol/openid-connect/certs")
+                .withJwkSetUri("http://localhost:8082/realms/hunters_league/protocol/openid-connect/certs")
                 .build();
     }
 
