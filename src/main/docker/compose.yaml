@@ -8,9 +8,10 @@ services:
       - 'POSTGRES_PASSWORD=password'
       - 'POSTGRES_USER=samurai'
     volumes:
-    - C:\Users\Youcode\Desktop\pgdata:/var/lib/postgresql/data
+      - C:\Users\Youcode\Desktop\pgdata:/var/lib/postgresql/data
     ports:
       - '5433:5432'
 volumes:
   postgres_data:
-    driver: local
+    driver:
+      local

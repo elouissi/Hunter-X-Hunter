@@ -1,64 +1,58 @@
-  version: '3.8'
+version: '3.8'
 
-  services:
-    # Service pour l'application Spring Boot
-    app:
-      image: jenkins_sonar:latest
-      container_name: hunters_league_app
-      ports:
-        - "8443:8443"
-      environment:
-        SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/samurai
-        SPRING_DATASOURCE_USERNAME: samurai
-        SPRING_DATASOURCE_PASSWORD: password
-        SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8082/realms/hunters_league
-        SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://keycloak:8082/realms/hunters_league/protocol/openid-connect/certs
-        SPRING_JPA_HIBERNATE_DDL_AUTO: none
-        SPRING_JPA_SHOW_SQL: true
-        SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: public
-        SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: true
-        SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
-        SPRING_LIQUIBASE_ENABLED: false
-        SPRING_LIQUIBASE_CHANGE_LOG: db/changelog/master.yaml
-      networks:
-        - app_network
-      depends_on:
-        - db
-        - keycloak
+services:
+  # Service pour la base de données PostgreSQL
+  db:
+    image: postgres:latest
+    container_name: samurai_db
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: samurai
+      POSTGRES_USER: samurai
+    volumes:
+      - C:\Users\Youcode\Desktop\pgdata:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'
+    networks:
+      - app_network
 
-    # Service pour la base de données PostgreSQL
-    db:
-      image: postgres:latest
-      container_name: samurai_db
-      environment:
-        POSTGRES_PASSWORD: password
-        POSTGRES_DB: samurai
-        POSTGRES_USER: samurai
-      volumes:
-        - C:\Users\Youcode\Desktop\pgdata:/var/lib/postgresql/data
-      ports:
-        - '5433:5432'
-      networks:
-        - app_network
+  # Service pour Jenkins
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: hunters_league_jenkins
+    ports:
+      - '8081:8080'
+      - '50000:50000'
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    networks:
+      - app_network
 
-    # Service pour Keycloak
-    keycloak:
-      image: quay.io/keycloak/keycloak:latest
-      container_name: hunters_league_keycloak
-      environment:
-        KEYCLOAK_ADMIN: admin
-        KEYCLOAK_ADMIN_PASSWORD: admin
-      command:
-        - start-dev
-      ports:
-        - '8082:8080'
-      networks:
-        - app_network
+  # Service pour SonarQube
+  sonarqube:
+    image: sonarqube:community
+    container_name: hunters_league_sonarqube
+    ports:
+      - '9000:9000'
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    networks:
+      - app_network
 
-  networks:
-    app_network:
-      driver: bridge
+networks:
+  app_network:
+    driver: bridge
 
-  volumes:
-    postgres_data:
-      driver: local
+volumes:
+  jenkins_home:
+    driver: local
+  sonarqube_data:
+    driver: local
+  sonarqube_extensions:
+    driver: local
+  sonarqube_logs:
+    driver: local
