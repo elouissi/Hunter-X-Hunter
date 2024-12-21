@@ -1,0 +1,28 @@
+# deployment-config.yaml
+app:
+  name: hunter
+  version: 1.0.0
+
+deploy:
+  environment: production
+  server:
+    host: ${SERVER_HOST}
+    port: 8085
+
+  artifacts:
+    - source: ./dist/**/*
+      destination: /var/www/app/
+
+  commands:
+    pre_deploy:
+      - npm install
+      - npm run build
+
+    deploy:
+      - backup_current_version
+      - copy_new_files
+      - update_permissions
+
+    post_deploy:
+      - npm run db:migrate
+      - pm2 restart app
