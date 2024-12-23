@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     environment {
-        SONARQUBE_URL = 'http://localhost:9000'
+        SONARQUBE_URL = 'http://sonarqube:9000'
         SONAR_PROJECT_KEY='hunters_league'
         SONAR_TOKEN = credentials('sonar_token')  // Make sure to use your credential for SonarQube token
-        IMAGE_NAME = 'maska_hunters_league'
+        IMAGE_NAME = 'sonarqube'
     }
 
     stages {
