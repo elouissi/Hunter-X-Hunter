@@ -96,7 +96,7 @@ pipeline {
                             '''
                             // Run the container
                             sh '''
-                            docker run -d --name ${IMAGE_NAME}_container -p 8080:8080 ${IMAGE_NAME}:latest
+                            docker run -d --name ${IMAGE_NAME}_container -p 8085:8080 ${IMAGE_NAME}:latest
                             '''
                         }
                     }
