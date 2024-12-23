@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'develop', url:'https://github.com/elouissi/Hunter-X-Hunter.git'
+                git branch: 'main', url:'https://github.com/elouissi/Hunter-X-Hunter.git'
             }
         }
 
