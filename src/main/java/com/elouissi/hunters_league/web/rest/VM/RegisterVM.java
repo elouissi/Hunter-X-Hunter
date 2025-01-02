@@ -50,10 +50,9 @@ public class RegisterVM {
 
     private LocalDateTime joinDate=LocalDateTime.now();
 
+    @NotNull(message = "License expiration date is required.")
     @Future(message = "license Expiration date should be in future")
     private LocalDateTime licenseExpirationDate;
 
-    @NotNull(message = "Role is required")
-    private Role role;
-
+    private Role role= Role.MEMBER;
 }

@@ -39,7 +39,7 @@ public class AuthenticationController {
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
             formData.add("grant_type", "password");
             formData.add("client_id", "hunters_league");
-            formData.add("client_secret", "SrI968UgIovV9UKSZ1RgVPKSyTiXIoOQ");
+            formData.add("client_secret", "jx9tJVq3ZwbkGjR9Y0kAMRURkIc69PZF");
             formData.add("username", request.getUsername());
             formData.add("password", request.getPassword());
 
@@ -49,7 +49,7 @@ public class AuthenticationController {
             HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(formData, headers);
 
             ResponseEntity<Map> response = restTemplate.postForEntity(
-                    "http://localhost:8082/realms/hunters_league/protocol/openid-connect/token",
+                    "http://localhost:8080/realms/hunters_league/protocol/openid-connect/token",
                     entity,
                     Map.class
             );
