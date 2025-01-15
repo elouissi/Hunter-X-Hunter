@@ -45,6 +45,7 @@ public class JwtService {
 
         extraClaims.put("role",getRole(userDetails.getUsername()));
         extraClaims.put("username",getUsername(userDetails.getUsername()));
+        extraClaims.put("cin",getCin(userDetails.getUsername()));
 
 
         return Jwts
@@ -60,6 +61,10 @@ public class JwtService {
     private String getRole(String username) {
         return userRepository.findByEmail(username).get().getRole().name();
     }
+    private String getCin(String username) {
+        return userRepository.findByEmail(username).get().getCin();
+    }
+
     private String getUsername(String username) {
         return userRepository.findByEmail(username).get().getName();
     }

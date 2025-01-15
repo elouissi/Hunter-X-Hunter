@@ -27,6 +27,25 @@ public class CompetitionService {
         return competitionRepository.findAll();
     }
 
+    public List<CompetitionDTO> getAllCompetitionsDTO() {
+        List<Competition> competitions = competitionRepository.findAll();
+        return competitions.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private CompetitionDTO mapToDTO(Competition competition) {
+        return new CompetitionDTO(
+                competition.getId(),
+                competition.getLocation(),
+                competition.getDate(),
+                competition.getOpenRegistration(),
+                competition.getSpeciesType(),
+                competition.getMinParticipants(),
+                competition.getMaxParticipants(),
+                Long.valueOf(competition.getParticipations().size())
+        );
+    }
     public Competition save(Competition competition){
         competition.setOpenRegistration(true);
         return (Competition) competitionRepository.save(competition);

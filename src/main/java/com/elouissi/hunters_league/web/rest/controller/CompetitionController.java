@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/competition")
@@ -32,6 +33,7 @@ public class CompetitionController {
         return ResponseEntity.ok("le specie a bien ete creer");
 
     }
+
 
     @GetMapping("/result/{uuid}")
     public ResponseEntity<CompetitionDTO> getCompetitonWithParticipation(@PathVariable UUID uuid){
@@ -51,9 +53,9 @@ public class CompetitionController {
         }
     }
     @GetMapping("getAll")
-    public ResponseEntity<List<Competition>> getAll(){
-        List<Competition> competitionList = competitionService.getALl();
-        return ResponseEntity.ok(competitionList);
+    public ResponseEntity<List<CompetitionDTO>> getAllCompetitions() {
+        List<CompetitionDTO> competitionDTOs = competitionService.getAllCompetitionsDTO();
+        return ResponseEntity.ok(competitionDTOs);
     }
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("getByCode/{code}")

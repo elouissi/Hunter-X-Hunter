@@ -14,7 +14,7 @@ import java.util.UUID;
 @Repository
 public interface CompetitionRepository extends JpaRepository<Competition, UUID> {
 
-    @Query("SELECT new com.elouissi.hunters_league.service.DTO.CompetitionDTO(c.location, c.date, COUNT(p)) " +
+    @Query("SELECT new com.elouissi.hunters_league.service.DTO.CompetitionDTO(c.id,c.location,c.date,c.openRegistration,c.speciesType,c.minParticipants,c.maxParticipants,  COUNT(p)) " +
             "FROM Competition c LEFT JOIN c.participations p " +
             "WHERE c.id = :competitionId " +
             "GROUP BY c.location, c.date")
